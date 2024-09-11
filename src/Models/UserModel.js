@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema(
           enum: ["Mother Tongue", "Fluent", "Certification"],
           required: true,
         },
-        certifcate: {
+        certificate: {
           type: String,
         },
       },
@@ -62,6 +62,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Custom validator to ensure the languages array is not empty
+userSchema.path("languages").validate({
+  validator: function (value) {
+    return value && value.length > 0; // Ensure the array is not empty
+  },
+  message: "At least one language is required.",
+});
 
 const User = mongoose.model("User", userSchema);
 
